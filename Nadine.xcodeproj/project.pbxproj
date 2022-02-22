@@ -26,6 +26,7 @@
 		04247AC2277A07A50053E136 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04247AC1277A07A50053E136 /* Preview Assets.xcassets */; };
 		04247AC9277A732C0053E136 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04247AC8277A732C0053E136 /* Styles.swift */; };
 		04247ACB277A7B970053E136 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04247ACA277A7B970053E136 /* AccountView.swift */; };
+		04E0FE3A27C538FA00A2B5AD /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E0FE3927C538FA00A2B5AD /* SearchView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		04247AC1277A07A50053E136 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		04247AC8277A732C0053E136 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		04247ACA277A7B970053E136 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		04E0FE3927C538FA00A2B5AD /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				0417E957277B9385005C8269 /* HomeView.swift */,
 				0412EFFC277CB52200E9F424 /* MatchView.swift */,
 				0412F000277D0E8F00E9F424 /* CourseView.swift */,
+				04E0FE3927C538FA00A2B5AD /* SearchView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				0417E961277BA7EF005C8269 /* NavigationBar.swift in Sources */,
 				04247AC9277A732C0053E136 /* Styles.swift in Sources */,
 				0417E952277ADD24005C8269 /* BlobView.swift in Sources */,
+				04E0FE3A27C538FA00A2B5AD /* SearchView.swift in Sources */,
 				0412EFFB277C2BAE00E9F424 /* Course.swift in Sources */,
 				04247ABD277A07A30053E136 /* ContentView.swift in Sources */,
 				0412EFFF277D0C2F00E9F424 /* CourseItem.swift in Sources */,
