@@ -33,8 +33,8 @@ struct NavigationBar: View {
                     Image(systemName: "magnifyingglass")
                         .font(.body.weight(.bold))
                         .frame(width: 36, height: 36)
-                        .foregroundColor(.secondary)
-                        .background(
+                        .foregroundColor(.primary)
+                        .background(.ultraThinMaterial, in:
                             RoundedRectangle(cornerRadius: 14, style: .continuous)
                         )
                     .strokeStyle(cornerRadius: 14)
@@ -71,6 +71,9 @@ struct NavigationBar: View {
 struct NavigationBar_Previews: PreviewProvider {
     static var previews: some View {
         NavigationBar(title: "Featured", hasScrolled: .constant(false))
+            
+
+
             
     }
 }
