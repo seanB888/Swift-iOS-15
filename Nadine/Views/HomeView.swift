@@ -12,11 +12,12 @@ struct HomeView: View {
     @Namespace var namespace
     @State var show = false
     @State var showStatusBar = true
+    @State var selectedID = UUID()
+    @EnvironmentObject var model: Model
     
     var body: some View {
         ZStack {
-            Color("Background")
-                .ignoresSafeArea()
+            Color("Background").ignoresSafeArea()
             
             ScrollView {
                 scrollDetection
@@ -30,13 +31,17 @@ struct HomeView: View {
                     .padding(.horizontal, 20)
                 
                 if !show {
-                    CourseItem(namespace: namespace, show: $show)
-                        .onTapGesture {
-                            withAnimation(.openCard) {
-                                show.toggle()
-                                showStatusBar = false
-                            }
-                        }
+                    cards
+                } else {
+                    ForEach(courses) { course in
+                        Rectangle()
+                            .fill(.white)
+                            .frame(height: 300)
+                            .cornerRadius(30)
+                            .shadow(color: Color("shadow"), radius: 20, x: 0, y: 10)
+                            .opacity(0.3)
+                        .padding(.horizontal, 30)
+                    }
                 }
             }
             .coordinateSpace(name: "scroll")
@@ -49,9 +54,7 @@ struct HomeView: View {
                NavigationBar(title: "Featured", hasScrolled: $hasScrolled)
         )
             if show {
-                CourseView(namespace: namespace, show: $show)
-                    .zIndex(1)
-                    .transition(.asymmetric(insertion: .opacity.animation(.easeInOut(duration: 0.1)), removal: .opacity.animation(.easeInOut(duration: 0.3).delay(0.2))))
+                detail
             }
         }
         .statusBar(hidden: !showStatusBar)
@@ -85,21 +88,20 @@ struct HomeView: View {
     
     var featured: some View {
         TabView {
-            ForEach(courses) { course in
+            ForEach(featuredCourses) { course in
                 GeometryReader { proxy in
-                    // Text("\(proxy.frame(in: .global).minX)")
                     let minX = proxy.frame(in: .global).minX
                     
                     FeaturedItem(course: course)
                         .padding(.vertical, 40)
                         .rotation3DEffect(.degrees(minX / -10), axis: (x: 0, y: 1, z: 0))
                         .shadow(color: Color("Shadow").opacity(0.3), radius: 10, x: 0, y: 10)
-                        .blur(radius: abs(minX / 50))
+                        .blur(radius: abs(minX / 40))
                         .overlay(
                             Image(course.image)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 330)
+                                .frame(width: 230)
                                 .offset(x: 32, y: -80)
                                 .offset(x: minX / 2)
                         )
@@ -113,11 +115,37 @@ struct HomeView: View {
                 .offset(x:250, y: -100)
         )
     }
+
+    var cards: some View {
+        ForEach(courses) { course in
+            CourseItem(namespace: namespace, course: course, show: $show)
+                .onTapGesture {
+                    withAnimation(.openCard) {
+                        show.toggle()
+                        model.showDetail.toggle()
+                        showStatusBar = false
+                        selectedID = course.id
+                    }
+            }
+        }
+    }
+
+    var detail: some View {
+        ForEach(courses) { course in
+            if course.id == selectedID {
+                CourseView(namespace: namespace, course: course, show: $show)
+                    .zIndex(1)
+                .transition(.asymmetric(insertion: .opacity.animation(.easeInOut(duration: 0.1)), removal: .opacity.animation(.easeInOut(duration: 0.3).delay(0.2))))
+            }
+        }
+    }
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            .preferredColorScheme(.dark)
+            .environmentObject(Model())
 
     }
 }

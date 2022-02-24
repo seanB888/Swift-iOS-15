@@ -9,8 +9,10 @@ import SwiftUI
 
 struct CourseView: View {
     var namespace: Namespace.ID
+    var course: Course = courses[0]
     @Binding var show: Bool
     @State var appear = [false, false, false]
+    @EnvironmentObject var model: Model
     
     var body: some View {
         ZStack {
@@ -37,67 +39,42 @@ struct CourseView: View {
     }
 
     var cover: some View {
-        VStack {
-            Spacer()
-        }
-        .frame(maxWidth: .infinity)
-        
-        .frame(height: 500)
-        .background(
-            Image("Illustration 9")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .matchedGeometryEffect(id: "background", in: namespace)
-        )
-        .background(
-            Image("Background 5")
-                .resizable()
-            // .aspectRatio(contentMode: .fill)
-                .matchedGeometryEffect(id: "image", in: namespace)
-        )
-        .mask(
-            RoundedRectangle(cornerRadius: 30, style: .continuous)
-                .matchedGeometryEffect(id: "mask", in: namespace)
-        )
-        .overlay(
-            VStack(alignment: .leading, spacing: 12) {
-                Text("20 Sections - 3 Hours".uppercased())
-                    .foregroundColor(.white)
-                    .font(.footnote.weight(.semibold))
-                    .matchedGeometryEffect(id: "subtitle", in: namespace)
-                Text("SwiftUI").font(.largeTitle.weight(.black))
-                    .matchedGeometryEffect(id: "title", in: namespace)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Text("Lear how to code in swift for iOS, iOS Watch and iOS TV")
-                    .foregroundColor(.white)
-                    .matchedGeometryEffect(id: "description", in: namespace)
-                    .font(.body)
-                Divider()
-                    .opacity(appear[0] ? 1 : 0)
-                HStack {
-                    Image("Avatar Default")
-                        .resizable()
-                        .frame(width: 26, height: 26)
-                        .cornerRadius(10)
-                        .padding(8)
-                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-                        .strokeStyle(cornerRadius: 18)
-                    Text("Taught by Sean Blake")
-                        .font(.footnote)
-                }
-                .opacity(appear[1] ? 1 : 0)
+        GeometryReader { proxy in
+            let scrollY = proxy.frame(in: .global).minY
+
+            VStack {
+                Spacer()
             }
-                .padding(20)
-                .background(
-                    Rectangle()
-                        .fill(.ultraThinMaterial)
-                        .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
-                        .matchedGeometryEffect(id: "blur", in: namespace)
-                )
-                .offset(y: 250)
-                .padding(20)
-        )
+            .frame(maxWidth: .infinity)
+
+            .frame(height: scrollY > 0 ? 500 + scrollY : 500)
+            .background(
+                Image(course.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .matchedGeometryEffect(id: "image\(course.id)", in: namespace)
+                    .offset(y: scrollY > 0 ? scrollY * -0.8 : 0)
+            )
+            .background(
+                Image(course.background)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .matchedGeometryEffect(id: "background\(course.id)", in: namespace)
+                    .offset(y: scrollY > 0 ? -scrollY : 0)
+                    .scaleEffect( scrollY > 0 ? scrollY / 1000 + 1 : 1)
+                    .blur(radius: scrollY / 10)
+            )
+            .mask(
+                RoundedRectangle(cornerRadius: 30, style: .continuous)
+                    .matchedGeometryEffect(id: "mask\(course.id)", in: namespace)
+                    .offset(y: scrollY > 0 ? -scrollY : 0)
+            )
+            .overlay(
+                overlayContent
+                    .offset(y: scrollY > 0 ? scrollY * -0.6 : 0)
+            )
+        }
+        .frame(height: 500)
     }
 
     var content: some View {
@@ -116,9 +93,11 @@ struct CourseView: View {
     }
 
     var button: some View {
+        // close button
         Button {
             withAnimation(.closeCard) {
                 show.toggle()
+                model.showDetail.toggle()
             }
         } label: {
             Image(systemName: "xmark")
@@ -128,8 +107,51 @@ struct CourseView: View {
                 .background(.ultraThinMaterial, in: Circle())
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 .padding(20)
+                .padding(.top, 30)
                 .ignoresSafeArea()
         }
+    }
+
+    var overlayContent: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(course.title)
+                .font(.largeTitle.weight(.bold))
+                .matchedGeometryEffect(id: "title\(course.id)", in: namespace)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text(course.subtitle.uppercased())
+                .foregroundColor(.white)
+                .font(.footnote.weight(.semibold))
+                .matchedGeometryEffect(id: "subtitle\(course.id)", in: namespace)
+
+            Text(course.text)
+                .foregroundColor(.white)
+                .matchedGeometryEffect(id: "text\(course.id)", in: namespace)
+                .font(.body)
+            Divider()
+                .opacity(appear[0] ? 1 : 0)
+            HStack {
+                Image("Avatar Default")
+                    .resizable()
+                    .frame(width: 26, height: 26)
+                    .cornerRadius(10)
+                    .padding(8)
+                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                    .strokeStyle(cornerRadius: 18)
+                Text("Taught by Sean Blake")
+                    .font(.footnote)
+            }
+            .opacity(appear[1] ? 1 : 0)
+        }
+            .padding(20)
+            .background(
+                Rectangle()
+                    .fill(.ultraThinMaterial)
+                    .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                    .matchedGeometryEffect(id: "blur\(course.id)", in: namespace)
+            )
+            .offset(y: 250)
+            .padding(20)
     }
 
     func fadeIn() {
@@ -158,5 +180,6 @@ struct CourseView_Previews: PreviewProvider {
     
     static var previews: some View {
         CourseView(namespace: namespace, show: .constant(true))
+            .environmentObject(Model())
     }
 }
