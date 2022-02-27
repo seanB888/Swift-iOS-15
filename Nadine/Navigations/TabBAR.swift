@@ -14,24 +14,28 @@ struct TabBAR: View {
     
     var body: some View {
         
-        HStack {
-            Spacer()
-            buttons
-        }
-        .padding(.horizontal, 8)
-        .padding(.top, 14)
-        .frame(height: 88, alignment: .top)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 34, style: .continuous))
-        .background(
-            background
-        )
-        .overlay(
-            overlay
-        )
-        .strokeStyle(cornerRadius: 34)
-        // used to move the tabBar down
-        .frame(maxHeight: .infinity, alignment: .bottom)
+        GeometryReader { proxy in
+            let hasHomeIndicator = proxy.safeAreaInsets.bottom - 44 > 20
+
+            HStack {
+                Spacer()
+                buttons
+            }
+            .padding(.horizontal, 8)
+            .padding(.top, 14)
+            .frame(height: hasHomeIndicator ? 88 : 62, alignment: .top)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: hasHomeIndicator ? 34 : 0, style: .continuous))
+            .background(
+                background
+            )
+            .overlay(
+                overlay
+            )
+            .strokeStyle(cornerRadius: hasHomeIndicator ? 34 : 0)
+            // used to move the tabBar down
+            .frame(maxHeight: .infinity, alignment: .bottom)
         .ignoresSafeArea()
+        }
     }
     
     var buttons: some View {

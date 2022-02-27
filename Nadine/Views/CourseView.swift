@@ -13,6 +13,8 @@ struct CourseView: View {
     @Binding var show: Bool
     @State var appear = [false, false, false]
     @EnvironmentObject var model: Model
+    @State var viewState: CGSize = .zero
+    @State var isDraggable = true
     
     var body: some View {
         ZStack {
@@ -25,13 +27,22 @@ struct CourseView: View {
                     .opacity(appear[2] ? 1 : 0)
 
             }
+            .coordinateSpace(name: "scroll")
+            .onAppear { model.showDetail = true }
+            .onDisappear { model.showDetail = false }
             .background(Color("Background"))
+            .mask(RoundedRectangle(cornerRadius: viewState.width / 3, style: .continuous))
+            .shadow(color: .black.opacity(0.3), radius: 30, x: 0, y: 10)
+            .scaleEffect(viewState.width / -500 + 1)
+            .background(.black.opacity(viewState.width / 500))
+            .background(.ultraThinMaterial)
+            .gesture(isDraggable ? drag : nil)
             .ignoresSafeArea()
 
             button
         }
         .onAppear {
-           fadeIn()
+            fadeIn()
         }
         .onChange(of: show) { newValue in
             fadeOut()
@@ -40,7 +51,7 @@ struct CourseView: View {
 
     var cover: some View {
         GeometryReader { proxy in
-            let scrollY = proxy.frame(in: .global).minY
+            let scrollY = proxy.frame(in: .named("scroll")).minY
 
             VStack {
                 Spacer()
@@ -52,6 +63,8 @@ struct CourseView: View {
                 Image(course.image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
+                    .padding(20)
+                    .frame(maxWidth: 500)
                     .matchedGeometryEffect(id: "image\(course.id)", in: namespace)
                     .offset(y: scrollY > 0 ? scrollY * -0.8 : 0)
             )
@@ -65,7 +78,7 @@ struct CourseView: View {
                     .blur(radius: scrollY / 10)
             )
             .mask(
-                RoundedRectangle(cornerRadius: 30, style: .continuous)
+                RoundedRectangle(cornerRadius: appear[0] ? 0 : 30, style: .continuous)
                     .matchedGeometryEffect(id: "mask\(course.id)", in: namespace)
                     .offset(y: scrollY > 0 ? -scrollY : 0)
             )
@@ -143,15 +156,42 @@ struct CourseView: View {
             }
             .opacity(appear[1] ? 1 : 0)
         }
-            .padding(20)
-            .background(
-                Rectangle()
-                    .fill(.ultraThinMaterial)
-                    .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
-                    .matchedGeometryEffect(id: "blur\(course.id)", in: namespace)
-            )
-            .offset(y: 250)
-            .padding(20)
+        .padding(20)
+        .background(
+            Rectangle()
+                .fill(.ultraThinMaterial)
+                .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                .matchedGeometryEffect(id: "blur\(course.id)", in: namespace)
+        )
+        .offset(y: 250)
+        .padding(20)
+    }
+
+    var drag: some Gesture {
+        DragGesture(minimumDistance: 30, coordinateSpace: .local)
+            .onChanged { value in
+                guard value.translation.width > 0 else { return }
+
+                if value.startLocation.x < 100 {
+                    withAnimation(.closeCard) {
+                        viewState = value.translation
+                    }
+                }
+
+                if viewState.width > 120 {
+                    close()
+                }
+
+            }
+            .onEnded { value in
+                if viewState.width > 80 {
+                    close()
+                } else {
+                    withAnimation(.closeCard) {
+                        viewState = .zero
+                    }
+                }
+            }
     }
 
     func fadeIn() {
@@ -173,11 +213,24 @@ struct CourseView: View {
         appear[1] = false
         appear[2] = false
     }
+
+    func close() {
+        withAnimation(.closeCard.delay(0.3)) {
+            show.toggle()
+            model.showDetail.toggle()
+        }
+        withAnimation(.closeCard) {
+            viewState = .zero
+        }
+
+        isDraggable = false
+    }
+
 }
 
 struct CourseView_Previews: PreviewProvider {
     @Namespace static var namespace
-    
+
     static var previews: some View {
         CourseView(namespace: namespace, show: .constant(true))
             .environmentObject(Model())

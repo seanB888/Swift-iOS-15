@@ -96,9 +96,9 @@ struct AccountView: View {
                     pinButton
                 }
             }
-            Link(destination: URL(string: "https://www.youtube.com/channel/UCVru9lA1coO2TLRqdZdHxjw")!) {
+            Link(destination: URL(string: "https://www.youtube.com/channel/UCu-7Xz0NKZAAbBkuKKmjRCQ")!) {
                 HStack {
-                    Label("YouTube", systemImage: "tv")
+                    Label("YouTube Channel", systemImage: "tv")
                     Spacer()
                     Image(systemName: "link")
                         .foregroundColor(.secondary)
