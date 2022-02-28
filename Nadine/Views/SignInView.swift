@@ -1,13 +1,13 @@
 //
-//  SignUpView.swift
+//  SignInView.swift
 //  Nadine
 //
-//  Created by SEAN BLAKE on 2/26/22.
+//  Created by SEAN BLAKE on 2/28/22.
 //
 
 import SwiftUI
 
-struct SignUpView: View {
+struct SignInView: View {
     enum Field: Hashable {
         case email
         case password
@@ -24,7 +24,7 @@ struct SignUpView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Sign Up")
+            Text("Sign In")
                 .font(.largeTitle).bold()
             Text("Access 120+ hours of courses, \ntutorials and livestreams")
                 .font(.headline)
@@ -56,10 +56,8 @@ struct SignUpView: View {
                 }
 
             // submit button
-            Button {
-
-            } label: {
-                Text("Create a account")
+            Button {} label: {
+                Text("Sign in")
                     .frame(maxWidth: .infinity)
             }
             .font(.headline)
@@ -70,19 +68,19 @@ struct SignUpView: View {
 
             // agreement area
             Group {
-                Text("By clicking on ")
-                + Text("__Create an account__").foregroundColor(.primary.opacity(0.7))
-                + Text(", you agree to our **Terms of Service** and **[Privacy Policy](https://5fourlab.com)**")
+//                Text("By clicking on ")
+//                + Text("__Create an account__").foregroundColor(.primary.opacity(0.7))
+//                + Text(", you agree to our **Terms of Service** and **[Privacy Policy](https://5fourlab.com)**")
 
                 Divider()
 
                 HStack {
-                    Text("Already have an account?")
+                    Text("Need an account?")
 
                     Button {
-                        model.selectedModal = .signIn
+                        model.selectedModal = .signUp
                     } label: {
-                        Text("**Sign in**")
+                        Text("**Sign up**")
                     }
                 }
             }
@@ -125,10 +123,11 @@ struct SignUpView: View {
     }
 }
 
-struct SignUpView_Previews: PreviewProvider {
+struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            SignUpView()
+            SignInView()
+                .environmentObject(Model())
         }
     }
 }
