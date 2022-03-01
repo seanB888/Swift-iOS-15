@@ -21,6 +21,7 @@ struct SignInView: View {
     @State var passwordY: CGFloat = 0
     @State var circleColor: Color = .blue
     @EnvironmentObject var model: Model
+    @AppStorage("isLogged") var isLogged = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -56,7 +57,9 @@ struct SignInView: View {
                 }
 
             // submit button
-            Button {} label: {
+            Button {
+                isLogged = true
+            } label: {
                 Text("Sign in")
                     .frame(maxWidth: .infinity)
             }
