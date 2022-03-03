@@ -45,7 +45,7 @@ struct HomeView: View {
                                 .cornerRadius(30)
                                 .shadow(color: Color("shadow"), radius: 20, x: 0, y: 10)
                                 .opacity(0.3)
-                            .padding(.horizontal, 30)
+                                .padding(.horizontal, 30)
                         }
                     }
                 }
@@ -59,8 +59,8 @@ struct HomeView: View {
             })
             .frame(maxWidth: .infinity)
             .overlay(
-               NavigationBar(title: "Featured", hasScrolled: $hasScrolled)
-        )
+                NavigationBar(title: "Featured", hasScrolled: $hasScrolled)
+            )
             if show {
                 detail
             }
@@ -119,6 +119,7 @@ struct HomeView: View {
                             showCourse = true
                             selectedIndex = index
                         }
+                        .accessibilityElement(children: .combine)
                 }
             }
         }
@@ -127,6 +128,7 @@ struct HomeView: View {
         .background(
             Image("Blob 1")
                 .offset(x:250, y: -100)
+                .accessibility(hidden: true)
         )
         .sheet(isPresented: $showCourse) {
             CourseView(namespace: namespace, course: featuredCourses[selectedIndex], show: $showCourse)
@@ -143,7 +145,9 @@ struct HomeView: View {
                         showStatusBar = false
                         selectedID = course.id
                     }
-            }
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityAddTraits(.isButton)
         }
     }
 
@@ -152,7 +156,7 @@ struct HomeView: View {
             if course.id == selectedID {
                 CourseView(namespace: namespace, course: course, show: $show)
                     .zIndex(1)
-                .transition(.asymmetric(insertion: .opacity.animation(.easeInOut(duration: 0.1)), removal: .opacity.animation(.easeInOut(duration: 0.3).delay(0.2))))
+                    .transition(.asymmetric(insertion: .opacity.animation(.easeInOut(duration: 0.1)), removal: .opacity.animation(.easeInOut(duration: 0.3).delay(0.2))))
             }
         }
     }

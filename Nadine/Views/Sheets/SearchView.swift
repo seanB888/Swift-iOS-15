@@ -34,6 +34,7 @@ struct SearchView: View {
                 )
                 .background(
                     Image("Blob 1").offset(x: -100, y: -200)
+                        .accessibility(hidden: true)
                 )
             }
             .searchable(text: $text, placement: .navigationBarDrawer(displayMode: .always), prompt: "Swift UI, React, UI Design") {

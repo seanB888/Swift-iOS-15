@@ -89,6 +89,7 @@ struct AccountView: View {
                     BlobView()
                         .offset(x: 90, y: -80)
                         .scaleEffect(2)
+                        .accessibility(hidden: true)
                 )
             // users name
             Text("Sean Blake")

@@ -20,9 +20,9 @@ struct ContentView: View {
             case .explore:
                 ExploreView()
             case .notifications:
-                HomeView()
+                NotificationsView()
             case .library:
-                AccountView()
+                LibraryView()
             }
             TabBAR()
                 .offset(y: model.showDetail ? 200 : 0)
@@ -30,10 +30,11 @@ struct ContentView: View {
             if showModal {
                 ModalView()
                  .zIndex(1)
+                 .accessibilityAddTraits(.isModal)
             }
         }
         .safeAreaInset(edge: .bottom) {
-            Color.clear.frame(height: 48)
+            Color.clear.frame(height: 88)
         }
         // use to control accessability with a range
         // texts wouldn't go smaller that large and larger than xxlarge

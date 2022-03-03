@@ -1,5 +1,5 @@
 //
-//  ExploreView.swift
+//  LibraryView.swift
 //  Nadine
 //
 //  Created by SEAN BLAKE on 3/2/22.
@@ -7,11 +7,31 @@
 
 import SwiftUI
 
-struct ExploreView: View {
+struct LibraryView: View {
     var body: some View {
         ZStack {
             Color("Background").ignoresSafeArea()
             ScrollView {
+
+                CertificateView()
+                    .frame(height: 220)
+                    .background(
+                        RoundedRectangle(cornerRadius: 30, style: .continuous)
+                            .fill(.linearGradient(colors: [.purple, .blue], startPoint: .topLeading, endPoint: .bottomTrailing))
+                            .padding(20)
+                            .offset(y: -30)
+                    )
+                    .background(
+                        RoundedRectangle(cornerRadius: 30, style: .continuous)
+                            .fill(.linearGradient(colors: [.teal, .blue], startPoint: .topLeading, endPoint: .bottomTrailing))
+                            .padding(40)
+                            .offset(y: -60)
+                    )
+                    .padding(20)
+
+                Text("History".uppercased())
+                    .titleStyle()
+
                 coursesSection
 
                 Text("Topics".uppercased())
@@ -19,10 +39,6 @@ struct ExploreView: View {
 
                 topicsSection
 
-                Text("Popular".uppercased())
-                    .titleStyle()
-
-                handbooksSection
             }
             .safeAreaInset(edge: .top) {
                 Color.clear.frame(height: 70)
@@ -45,15 +61,6 @@ struct ExploreView: View {
         }
     }
 
-    var handbooksSection: some View {
-        HStack(alignment: .top, spacing: 16) {
-            ForEach(handbooks) { handbook in
-                HandBookItem(handbook: handbook)
-            }
-        }
-        .padding(.horizontal, 20)
-    }
-
     var topicsSection: some View {
         VStack {
             ForEach(topics) { topic in
@@ -67,8 +74,8 @@ struct ExploreView: View {
     }
 }
 
-struct ExploreView_Previews: PreviewProvider {
+struct LibraryView_Previews: PreviewProvider {
     static var previews: some View {
-        ExploreView()
+        LibraryView()
     }
 }
