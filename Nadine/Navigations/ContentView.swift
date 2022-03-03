@@ -35,6 +35,10 @@ struct ContentView: View {
         .safeAreaInset(edge: .bottom) {
             Color.clear.frame(height: 48)
         }
+        // use to control accessability with a range
+        // texts wouldn't go smaller that large and larger than xxlarge
+        // this will affect throught the entire app
+        .dynamicTypeSize(.large ... .xxLarge)
     }
 }
 
