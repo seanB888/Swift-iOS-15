@@ -51,7 +51,7 @@ This project is licensed under the ![MIT License.](https://seanblake.info/licens
 
 ## 📬 Contact
 Sean B - hi@seanblake.info<br/>
-GitHub: [@seanB888](https://github.com/seanB888)
+Resume: [seanblake.info](https://seanblake.info)
 
 To run Nadine, clone the repository and open it in Xcode 15. Ensure you have the latest version of Xcode installed to access all SwiftUI features.
 
