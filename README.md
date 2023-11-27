@@ -47,7 +47,7 @@ Add your app screenshots or gifs here to make the README lively and visually app
 Contributions are welcome! If you have ideas for improvements or want to report a bug, please open an issue or submit a pull request.
 
 ## 📄 License
-This project is licensed under the ![MIT License.}(https://chat.openai.com/c/LICENSE)
+This project is licensed under the ![MIT License.](https://seanblake.info/license)
 
 ## 📬 Contact
 Sean B - hi@seanblake.info
